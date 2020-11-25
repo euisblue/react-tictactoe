@@ -1,4 +1,4 @@
-pragma once
+#pragma once
 #include <iostream>
 
 using std::cin;
@@ -29,7 +29,13 @@ void Converter::read()
     cin >> input;
     inputError = false;
 
-    // error check: input
+    if (input.size() > 8) 
+    {
+      cout << "1 byte = 8 bits (8 digits)\n";
+      inputError = true;
+    }
+    else
+    {
       for(char c : input)
       {
         if (c != '0' && c != '1' )
@@ -38,6 +44,7 @@ void Converter::read()
           break;
         }
       }
+    }
   } while (inputError);
 }
 
