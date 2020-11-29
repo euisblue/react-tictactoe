@@ -2,42 +2,41 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-function Square(props) {
-  return (
-    <button className="square" onClick={props.onClick}>
-      {props.value}
-    </button>
-  );
+class Square extends React.Component {
+  render() {
+    return (
+      <button className='square'
+              onClick={this.props.onClick}>
+       {this.props.value}
+      </button>
+    );
+  }
 }
 
 class Board extends React.Component {
-  renderSquare(i) {
+  renderSquare(i, row, col) {
     return (
       <Square 
+        key = {i}
         value={this.props.squares[i]}
-        onClick={() => this.props.onClick(i)}
+        onClick={() => this.props.onClick(i, row, col)}
       />
     );
 }
 
   render() {
+
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+      {
+        [...Array(3)].map((_, i) => (
+          <div key={i} className="board-row">
+            {
+              [...Array(3)].map((_, j) => this.renderSquare(3 * i + j, i, j))
+            }
+          </div>
+        ))
+      }
       </div>
     );
   }
@@ -51,26 +50,32 @@ class Game extends React.Component {
         squares: Array(9).fill(null)
       }],
       stepNumber: 0,
+      clicked: null,
       xIsNext: true,
     }
   }
 
-  handleClick(i) {
+  handleClick(i, row, col) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
+
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
+
     squares[i] = this.state.xIsNext ? 'X' : 'O';
+
     this.setState({
       history: history.concat([{
-        squares: squares
+        squares: squares,
+        clicked: [row, col]
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
     });
   }
+
 
   jumpTo(step) {
     this.setState({
@@ -82,15 +87,24 @@ class Game extends React.Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares, history.length);
+    const winner = calculateWinner(current.squares, current.squares);
 
     const moves = history.map((step, move) => {
-      const desc = move ?
-        'Go to move #' + move : 
-        'Go to game start';
+      let desc = null;
+      let row = null;
+      let col = null;
+      let bold = (move === this.state.stepNumber ? 'bold' : null);
+
+      if (move) {
+        desc = `Go to move #${move}`;
+        row = `(${this.state.history[move].clicked[0]}, `;
+        col = `${this.state.history[move].clicked[1]})`;
+      } else {
+        desc = 'Go to game start';
+      }
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button className={bold} onClick={() => this.jumpTo(move)}>{desc} {row} {col}</button>
         </li>
       );
     });
@@ -109,7 +123,7 @@ class Game extends React.Component {
       <div className="game-board">
       <Board 
         squares = {current.squares}
-        onClick = {(i) => this.handleClick(i)}
+        onClick = {(i, row, col) => this.handleClick(i, row, col)}
       />
       </div>
       <div className="game-info">
@@ -128,7 +142,7 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-function calculateWinner(squares, historyLength) {
+function calculateWinner(squares, current) {
   const lines = [
     [1, 2, 3],
     [4, 5, 6],
@@ -147,7 +161,7 @@ function calculateWinner(squares, historyLength) {
     }
   }
 
-  if (historyLength === 10) {
+  if(current && current.includes(null) === false) {
     return 'draw';
   }
 }

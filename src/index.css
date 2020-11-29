@@ -5,12 +5,21 @@ body {
 
 ol, ul {
   padding-left: 30px;
+  font-size: 17px;
 }
 
 .board-row:after {
   clear: both;
   content: "";
   display: table;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+div.board-row button:hover {
+  background-color: rgba(0, 157, 245, 0.32);
 }
 
 .status {
@@ -21,15 +30,17 @@ ol, ul {
   background: #fff;
   border: 1px solid #999;
   float: left;
-  font-size: 24px;
-  font-weight: bold;
   line-height: 34px;
-  height: 34px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
+
+  font-size: 40px;
+  font-weight: bold;
   text-align: center;
-  width: 34px;
+
+  height: 100px;
+  width: 100px;
 }
 
 .square:focus {
@@ -49,4 +60,9 @@ ol, ul {
   margin-left: 20px;
 }
 
-
+.bold {
+  border: 2px solid rgb(255, 111, 187);
+  border-radius: 5px;
+  background-color: #606060;
+  color: #e8e8e8;
+}
