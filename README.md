@@ -10,8 +10,9 @@ Create a Tic Tac Toe game.
 This TicTacToe project was based on the [React Tutorial](https://reactjs.org/tutorial/tutorial.html#picking-a-key).
 
 ## Used
+
 - React.js
- + [Create React App](https://github.com/facebook/create-react-app)
+  + [Create React App](https://github.com/facebook/create-react-app)
 
 ## Additional Features
 - [x] Display the location for each move in the format (col, row) in the move history list.
