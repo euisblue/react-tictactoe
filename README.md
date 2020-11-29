@@ -1,16 +1,13 @@
-# TicTacToe
+## [1 Day 1 Project](https://github.com/bugxvii/OneDay_OneProject) 
 
-[1 Day 1 Project](https://github.com/bugxvii/OneDay_OneProject) Challenge Day 1.
-
-Create a Tic Tac Toe game.
+Day 1: Tic Tac Toe
 
 ![TTT demo](./ttt.gif)
 
 ## Description
-This TicTacToe project was based on the [React Tutorial](https://reactjs.org/tutorial/tutorial.html#picking-a-key).
+Create a Tic Tac Toe game.
 
 ## Used
-
 - React.js
   + [Create React App](https://github.com/facebook/create-react-app)
 
